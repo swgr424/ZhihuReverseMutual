@@ -98,9 +98,9 @@
   }
   
   var initMutualPanel = function() {
-    var startButton = $("<button class='goog-buttonset-default'>获取反向交集</button>");
+    var startButton = $("<button class='goog-buttonset-default'>获取逆向交集</button>");
     startButton.click(function() {
-      var title = $("<div class='zm-profile-side-same-friends'><div class='zm-profile-side-section-title'>正在获取反向交集，请耐心等待...</div></div>");
+      var title = $("<div class='zm-profile-side-same-friends'><div class='zm-profile-side-section-title'>正在获取逆向交集，请耐心等待...</div></div>");
       var spinner = $("<div style='position:relative; display:inline-block; width: 40pt'>&nbsp;</div>")
       title.append(spinner);
       reverseMutualDiv.find("div.zm-side-section-inner").empty().append(title);

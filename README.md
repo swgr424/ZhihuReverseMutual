@@ -3,7 +3,7 @@
 当前版本 1.0
 
 - 在知乎用户页面提供“ta关注的人中，x人也关注我”的功能。
-- 详见：http://zhuanlan.zhihu.com/swgr6/[TODO: add link]
+- 详见：http://zhuanlan.zhihu.com/p/20779070
 
 更新历史：
 
