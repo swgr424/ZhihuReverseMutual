@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "知乎逆向交集",
+  "description": "提供“ta关注的人中，x人也关注我”的功能",
+  "version": "1.0",
+
+  "content_scripts": [{
+    "matches": [
+      "http://*.zhihu.com/people/*",
+      "https://*.zhihu.com/people/*"
+    ],
+    "js": [
+      "js/jquery-2.1.4.min.js",
+      "js/spin.min.js",
+      "js/jquery.spin.js",
+      "util.js",
+      "content_action.js"
+    ]
+  }],
+
+  "permissions": [
+    "http://*.zhihu.com/*",
+    "https://*.zhihu.com/*"
+  ]
+}
