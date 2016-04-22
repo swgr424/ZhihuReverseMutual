@@ -7,6 +7,7 @@
       return {
         id: userDiv.find("a.zm-item-link-avatar").attr("href").match(/\/people\/(.*)/)[1],
         avatar_medium_url: userDiv.find("img.zm-item-img-avatar").attr("src"),
+        is_following_me: userDiv.find("button[data-followme='1']").length > 0
       };
     };
   
@@ -39,29 +40,16 @@
     util.parallelPost(requests, success, complete);
   };  // getFolloweers
 
-  var getMyFollowers = function(done) {
-    var getNumFollowers = function(done) {
-      var myId = util.getMyUserInfo().id;
-      $.get("/people/" + myId, function(data) {
-        var numFollowers = $(data).find("a[href='/people/" + myId + "/followers'] strong").text();
-        done(numFollowers);
-      });
-    };
-    
-    var userHash = util.getMyUserInfo().userHash;
-    getNumFollowers(function(numFollowers) { getFolloweers(numFollowers, userHash, "/node/ProfileFollowersListV2", done); });
-  };  // getMyFollowers
-  
   var getCurrentUserFollowees = function(done) {
     var numFollowees = $("a[href='/people/" + util.getCurrentUserInfo().id + "/followees'] strong").text();
     var userHash = util.getCurrentUserInfo().userHash;
     getFolloweers(numFollowees, userHash, "/node/ProfileFolloweesListV2", done);
   }
   
-  var joinToFindMutual = function(followees, followers) {
+  var findMutual = function(followees) {
     var result = {};
     for (var id in followees) {
-      if (followees.hasOwnProperty(id) && followers.hasOwnProperty(id)) {
+      if (followees.hasOwnProperty(id) && followees[id].is_following_me) {
         result[id] = followees[id];
       }
     }
@@ -76,25 +64,19 @@
       var avatarNode = $('<a title="' + mutual[id].nickName + '" data-tip="p$t$' + id + '" class="zm-item-link-avatar" href="/people/' + id + '"><img src="' + mutual[id].avatar_medium_url.replace(/_m\./, "_s.") + '" class="zm-item-img-avatar"></a>');
       reverseMutualContent.find("div.zu-small-avatar-list").append(avatarNode);
     }
-    if (numMutual > 10) {
+    if (numMutual > 9) {
       $("<style type='text/css'> .zm-profile-side-same-friends.zm-profile-side-reverse-same-friends .zm-item-link-avatar{ margin-bottom: 3px; } </style>").appendTo("head");
     }
     reverseMutualDiv.find("div.zm-side-section-inner").empty().append(reverseMutualContent);
   }  // renderMutual
   
-  var followees = null, followers = null;
-  var triggerJoin = function() {
-    if (followees && followers) {
-      var mutual = joinToFindMutual(followees, followers);
+  var start = function() {
+    getCurrentUserFollowees(function(followees) {
+      var mutual = findMutual(followees);
       var numMutual = Object.keys(mutual).length;
       console.log(numMutual + " reverse mutual(s) found.");
       renderMutual(mutual);
-    }
-  };
-  
-  var start = function() {
-    getCurrentUserFollowees(function(ee) { followees = ee; triggerJoin(); });
-    getMyFollowers(function(er) { followers = er; triggerJoin(); });
+    });
   }
   
   var initMutualPanel = function() {
