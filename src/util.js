@@ -31,7 +31,7 @@ function Util() {
     var kMaxParallelRequests = 30;
     var runningRequest = 0;
     var worksQueue = [];
-    
+
     var schedule = function() {
       while (worksQueue.length > 0 && runningRequest < kMaxParallelRequests) {
         var work = worksQueue.shift();
