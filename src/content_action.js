@@ -56,9 +56,7 @@
       
       function updateProgressUI() {
         var newProgress = Math.ceil(curProgress * 100.0 / totalTasks) + "%";
-        console.log(newProgress);
-        progressBar.find('.ProfileProgress-completeness').width(newProgress)
-            .text(newProgress);
+        progressBar.find('.profile-progress-completeness').width(newProgress).text(newProgress);
       }
 
       return function (finishedTask) {
@@ -89,8 +87,7 @@
   }
   
   var reverseMutualDiv = $('<div class="zm-profile-side-section"><div class="zm-side-section-inner zg-clear"></div></div>');
-  var progressBar = $("<div style='margin-bottom: 20px;'><span class='ProfileProgress-bar' style='left: 0; right: 35px;'><span class='ProfileProgress-completeness' style='width:" +
-      " 0%;'>0%</span></span></div>");
+  var progressBar = $("<div style='margin-bottom: 20px;'><span class='profile-progress-bar' style='left: 0; right: 35px;'><span class='profile-progress-completeness' style='width: 0%;'>&nbsp;</span></span></div>");
 
   var renderMutual = function(mutual) {
     var numMutual = Object.keys(mutual).length;
@@ -121,10 +118,8 @@
       var title = $("<div class='zm-profile-side-same-friends'><div class='zm-profile-side-section-title'>正在获取逆向交集，请耐心等待...</div></div>");
       var spinner = $("<div style='position:relative; display:inline-block; width: 40pt'>&nbsp;</div>")
       title.append(spinner);
-      reverseMutualDiv.find("div.zm-side-section-inner").empty().append(title)
-          .end().append(progressBar);
+      reverseMutualDiv.find("div.zm-side-section-inner").empty().append(title).end().append(progressBar);
       spinner.spin({lines: 9, top: '50%', left: '50%', scale: 0.4});
-      // TODO: 完全可以写个进度条。
       start();
     })
     reverseMutualDiv.find("div.zm-side-section-inner").append(startButton);
