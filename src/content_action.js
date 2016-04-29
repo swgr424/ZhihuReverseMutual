@@ -32,11 +32,43 @@
         var user = userDivToUser($(msg));
         followeers[user.id] = user;
       });
+      progressUpdate(data.msg.length);
     };
     var complete = function() {
       console.log(Object.keys(followeers).length + " followee/rs fetched.");
       done(followeers);
-    }; 
+    };
+    var progressUpdate = (function () {
+      // When the change in the number of the finished tasks
+      // is larger than a threshold, we update UI.
+      var CONST = {
+        THRESHOLD : 0.05
+      };
+      var totalTasks = numFolloweers,
+          updateThreshold = Math.ceil(CONST.THRESHOLD * numFolloweers),
+          curProgress = 0,
+          changeCount = 0;
+
+      function updateProgressCount(finishedTask) {
+        curProgress += finishedTask;
+        changeCount += finishedTask;
+      }
+      
+      function updateProgressUI() {
+        var newProgress = Math.ceil(curProgress * 100.0 / totalTasks) + "%";
+        console.log(newProgress);
+        progressBar.find('.ProfileProgress-completeness').width(newProgress)
+            .text(newProgress);
+      }
+
+      return function (finishedTask) {
+        updateProgressCount(finishedTask);
+        if (changeCount >= updateThreshold) {
+          updateProgressUI();
+          changeCount = 0;
+        }
+      }
+    })();
     util.parallelPost(requests, success, complete);
   };  // getFolloweers
 
@@ -57,6 +89,9 @@
   }
   
   var reverseMutualDiv = $('<div class="zm-profile-side-section"><div class="zm-side-section-inner zg-clear"></div></div>');
+  var progressBar = $("<div style='margin-bottom: 20px;'><span class='ProfileProgress-bar' style='left: 0; right: 35px;'><span class='ProfileProgress-completeness' style='width:" +
+      " 0%;'>0%</span></span></div>");
+
   var renderMutual = function(mutual) {
     var numMutual = Object.keys(mutual).length;
     var reverseMutualContent = $('<div class="zm-profile-side-same-friends zm-profile-side-reverse-same-friends"><div class="zm-profile-side-section-title">' + util.getCurrentUserGender() + '关注的人中，' + numMutual + ' 人</a>也关注我</div><div class="zu-small-avatar-list zg-clear"></div></div>');
@@ -67,6 +102,7 @@
     if (numMutual > 9) {
       $("<style type='text/css'> .zm-profile-side-same-friends.zm-profile-side-reverse-same-friends .zm-item-link-avatar{ margin-bottom: 3px; } </style>").appendTo("head");
     }
+    progressBar.remove();
     reverseMutualDiv.find("div.zm-side-section-inner").empty().append(reverseMutualContent);
   }  // renderMutual
   
@@ -85,7 +121,8 @@
       var title = $("<div class='zm-profile-side-same-friends'><div class='zm-profile-side-section-title'>正在获取逆向交集，请耐心等待...</div></div>");
       var spinner = $("<div style='position:relative; display:inline-block; width: 40pt'>&nbsp;</div>")
       title.append(spinner);
-      reverseMutualDiv.find("div.zm-side-section-inner").empty().append(title);
+      reverseMutualDiv.find("div.zm-side-section-inner").empty().append(title)
+          .end().append(progressBar);
       spinner.spin({lines: 9, top: '50%', left: '50%', scale: 0.4});
       // TODO: 完全可以写个进度条。
       start();

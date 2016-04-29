@@ -1,2 +1,7 @@
 *.pem 
 *.bat
+
+### JetBrains WebStorm
+
+.idea
+
