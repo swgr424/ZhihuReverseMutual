@@ -56,7 +56,7 @@
       
       function updateProgressUI() {
         var newProgress = Math.ceil(curProgress * 100.0 / totalTasks) + "%";
-        progressBar.find('.profile-progress-completeness').width(newProgress).text(newProgress);
+        progressBar.find('.ProfileProgress-completeness').width(newProgress).text(newProgress);
       }
 
       return function (finishedTask) {
@@ -87,7 +87,7 @@
   }
   
   var reverseMutualDiv = $('<div class="zm-profile-side-section"><div class="zm-side-section-inner zg-clear"></div></div>');
-  var progressBar = $("<div style='margin-bottom: 20px;'><span class='profile-progress-bar' style='left: 0; right: 35px;'><span class='profile-progress-completeness' style='width: 0%;'>&nbsp;</span></span></div>");
+  var progressBar = $("<div style='margin-bottom: 20px;'><span class='ProfileProgress-bar' style='left: 0; right: 35px;'><span class='ProfileProgress-completeness' style='width: 0%;'>&nbsp;</span></span></div>");
 
   var renderMutual = function(mutual) {
     var numMutual = Object.keys(mutual).length;
