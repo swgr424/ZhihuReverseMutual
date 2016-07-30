@@ -93,7 +93,7 @@
     var numMutual = Object.keys(mutual).length;
     var reverseMutualContent = $('<div class="zm-profile-side-same-friends zm-profile-side-reverse-same-friends"><div class="zm-profile-side-section-title">' + util.getCurrentUserGender() + '关注的人中，' + numMutual + ' 人</a>也关注我</div><div class="zu-small-avatar-list zg-clear"></div></div>');
     for (var id in mutual) {
-      var avatarNode = $('<a title="' + mutual[id].nickName + '" data-tip="p$t$' + id + '" class="zm-item-link-avatar" href="/people/' + id + '"><img src="' + mutual[id].avatar_medium_url.replace(/_m\./, "_s.") + '" class="zm-item-img-avatar"></a>');
+      var avatarNode = $('<a title="' + mutual[id].nickName + '" data-hovercard="p$t$' + id + '" class="zm-item-link-avatar" href="/people/' + id + '"><img src="' + mutual[id].avatar_medium_url.replace(/_m\./, "_s.") + '" class="zm-item-img-avatar"></a>');
       reverseMutualContent.find("div.zu-small-avatar-list").append(avatarNode);
     }
     if (numMutual > 9) {
