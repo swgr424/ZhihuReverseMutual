@@ -55,10 +55,20 @@ function Util() {
             method: "POST",
             data: request.data,
             success: function(data) {
-              success(data);
+              try {
+                success(data);
+              } catch (e) {
+                console.log("Error while processing data: " + e.stack);
+              }
               done();
               ++num_complete;
-              if (num_complete == num_requests) complete();
+              if (num_complete == num_requests) {
+                try {
+                  complete();
+                } catch (e) {
+                  console.log("Error during complete(): " + e.stack);
+                }
+              }
             },
             error: function(data) {
               console.log("Request failed. Retrying...");
