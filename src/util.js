@@ -43,6 +43,10 @@ function Util() {
       }
     }
 
+    // Send out 'requests' in parallel using POST method.
+    // 'success' will be called with returned data when each request succeeds.
+    // 'complete' will be called when all requests have finished successfully.
+    // Will retry automatically when request fails.
     this.parallelPost = function(requests, success, complete) {
       var num_requests = requests.length;
       var num_complete = 0;
