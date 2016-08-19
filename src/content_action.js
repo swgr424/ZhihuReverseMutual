@@ -5,7 +5,7 @@
   var getFolloweers = function(numFolloweers, userHash, apiUrl, done) {
     var userDivToUser = function(userDiv) {
       return {
-        id: userDiv.find("a.zm-item-link-avatar").attr("href").match(/\/people\/(.*)/)[1],
+        id: userDiv.find("a.zm-item-link-avatar").attr("href").match(/\/(people|org)\/(.*)/)[2],
         avatar_medium_url: userDiv.find("img.zm-item-img-avatar").attr("src"),
         is_following_me: userDiv.find("button[data-followme='1']").length > 0
       };
